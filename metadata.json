@@ -1,0 +1,6 @@
+{
+  "name": "The New York Times",
+  "description": "An authentic New York Times broadsheet digital experience featuring front-page coverage, section editions, full article reading view, market data, and interactive editorial features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
