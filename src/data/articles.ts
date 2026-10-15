@@ -8,14 +8,18 @@ export interface Article {
   section: string;
   tag?: string;
   image?: string;
+  realImage?: string;
   caption?: string;
   photoCredit?: string;
   isLead?: boolean;
   isOpinion?: boolean;
   opinionAuthor?: string;
+  opinionAuthorTitle?: string;
+  opinionAvatar?: string;
   commentsCount: number;
   body: string[];
   pullQuote?: string;
+  edition?: string;
 }
 
 export const ARTICLES: Article[] = [
@@ -28,6 +32,7 @@ export const ARTICLES: Article[] = [
     date: "Wednesday, October 16, 2024",
     section: "U.S.",
     image: "https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg",
+    realImage: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
     caption: "Official portrait of key administration figures under scrutiny during ongoing transitions.",
     photoCredit: "DOUG MILLS/THE NEW YORK TIMES",
     isLead: true,
@@ -50,6 +55,7 @@ export const ARTICLES: Article[] = [
     date: "Wednesday, October 16, 2024",
     section: "U.S.",
     tag: "Analysis",
+    image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=80",
     commentsCount: 312,
     pullQuote: "The departures leave key policy portfolios without senior female leadership at a pivotal legislative juncture.",
     body: [
@@ -67,6 +73,7 @@ export const ARTICLES: Article[] = [
     readTime: "4 MIN READ",
     date: "Wednesday, October 16, 2024",
     section: "U.S.",
+    image: "https://images.unsplash.com/photo-1575517111478-7f6afd0973db?auto=format&fit=crop&w=800&q=80",
     commentsCount: 184,
     body: [
       "PALM BEACH, Fla. — For years, Kimberly Guilfoyle was an ubiquitous presence at high-dollar donor retreats and prime-time rally stages, celebrated for her fiery delivery and ability to unlock grassroots donor checkbooks.",
@@ -82,6 +89,7 @@ export const ARTICLES: Article[] = [
     readTime: "3 MIN READ",
     date: "Wednesday, October 16, 2024",
     section: "World",
+    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
     commentsCount: 512,
     body: [
       "BEIRUT, Lebanon — As artillery and drone strikes rattled southern towns along the Blue Line for another consecutive day, Western diplomats accelerated shuttle negotiations between Paris, Washington, and regional capitals to forestall an all-out regional confrontation.",
@@ -97,6 +105,7 @@ export const ARTICLES: Article[] = [
     readTime: "2 MIN READ",
     date: "Wednesday, October 16, 2024",
     section: "U.S.",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
     commentsCount: 95,
     body: [
       "State secretaries and municipal election directors across the nation have deployed rapid-response verification units designed to identify synthetic audio robocalls and cloned video broadcasts within minutes of transmission.",
@@ -111,6 +120,7 @@ export const ARTICLES: Article[] = [
     readTime: "3 MIN READ",
     date: "Wednesday, October 16, 2024",
     section: "Business",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80",
     commentsCount: 167,
     body: [
       "SEATTLE — In a breakthrough that could restore production of commercial jetliners, Boeing and representatives for more than 33,000 striking machinists announced a tentative agreement featuring a 35 percent general wage increase over four years.",
@@ -127,6 +137,8 @@ export const ARTICLES: Article[] = [
     section: "Opinion",
     isOpinion: true,
     opinionAuthor: "David Brooks",
+    opinionAuthorTitle: "Contributing Opinion Columnist",
+    opinionAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
     commentsCount: 843,
     pullQuote: "When people stop belonging to neighborly associations and local clubs, political hostility rushes in to fill the existential vacuum.",
     body: [
@@ -145,6 +157,8 @@ export const ARTICLES: Article[] = [
     section: "Opinion",
     isOpinion: true,
     opinionAuthor: "Thomas L. Friedman",
+    opinionAuthorTitle: "Foreign Affairs Columnist",
+    opinionAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
     commentsCount: 672,
     body: [
       "We are approaching a decisive historical juncture in the Levant. The strategic choices made in the coming days will determine whether the region pivots toward an integrated security and economic architecture or slides into systemic fragmentation.",
@@ -161,6 +175,7 @@ export const ARTICLES: Article[] = [
     section: "Opinion",
     isOpinion: true,
     opinionAuthor: "The Editorial Board",
+    opinionAuthorTitle: "Institutional Voice of The Times",
     commentsCount: 289,
     body: [
       "Every year, world leaders gather at environmental summits, recite alarming meteorological data, and sign nonbinding communiqués. Yet the critical chasm between rhetorical commitments and disbursed financing remains largely unbridged.",
@@ -168,31 +183,48 @@ export const ARTICLES: Article[] = [
     ]
   },
   {
-    id: 'wirecutter-best-headphones',
-    title: "The Best Noise-Canceling Headphones for Commuting and Travel",
-    summary: "After 120 hours of testing 28 pairs in subways and airplanes, our audio experts picked the top performers for comfort, battery life, and acoustic isolation.",
-    byline: "By Wirecutter Staff",
-    readTime: "8 MIN READ",
+    id: 'fed-interest-rate-outlook',
+    title: "Federal Reserve Navigates Soft Landing as Inflation Cools to Three-Year Low",
+    summary: "Chairman Jerome Powell and central bank governors weigh future 25-basis-point reductions amidst resilient labor market numbers.",
+    byline: "By Jeanna Smialek",
+    readTime: "4 MIN READ",
     date: "Wednesday, October 16, 2024",
-    section: "Wirecutter",
-    commentsCount: 94,
+    section: "Business",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+    commentsCount: 215,
     body: [
-      "Whether you are enduring a turbulent cross-country flight or attempting to focus in an open-plan office, premium noise-canceling headphones are essential gear.",
-      "Our team evaluated active noise cancellation fidelity, long-term headband ergonomics, microphone wind suppression, and real-world battery endurance across multiple test environments."
+      "WASHINGTON — Consumer price data released this morning confirmed that underlying inflation pressures have moderated to their tamest cadence since early 2021, strengthening expectations for steady interest rate reductions into the coming year.",
+      "Federal Reserve officials have emphasized a balanced stance: guarding against unwarranted labor market deceleration while ensuring that price stability takes permanent root."
     ]
   },
   {
-    id: 'cooking-crispy-sheet-pan-chicken',
-    title: "Crispy Sheet-Pan Lemon Herb Chicken With Roasted Fennel",
-    summary: "A vibrant weeknight dinner that balances tender roast chicken thighs with caramelized vegetables, bright citrus, and fresh oregano.",
-    byline: "By Melissa Clark",
-    readTime: "25 MIN COOK TIME",
+    id: 'tech-antitrust-court-ruling',
+    title: "Federal Judge Weighs Structural Remedies in Landmark Search Monopoly Case",
+    summary: "The Justice Department outlines potential divestiture remedies as Silicon Valley braces for the most consequential antitrust showdown in two decades.",
+    byline: "By David McCabe and Cecilia Kang",
+    readTime: "6 MIN READ",
     date: "Wednesday, October 16, 2024",
-    section: "Cooking",
-    commentsCount: 341,
+    section: "Business",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+    commentsCount: 388,
     body: [
-      "The secret to shatteringly crisp chicken skin while preserving juicy meat is high heat and ample space on the baking sheet so moisture evaporates rather than steams.",
-      "Tossing sliced fennel bulbs and shallots in the rendered chicken drippings creates sweet, melt-in-your-mouth vegetables that elevate this humble weeknight meal into a dinner party centerpiece."
+      "In a crowded federal courtroom in Washington, antitrust prosecutors presented detailed proposals to dismantle exclusive distribution agreements across mobile operating systems and desktop browsers.",
+      "Industry analysts predict that any mandated divestiture will trigger years of appellate litigation that will fundamentally redefine digital commerce platforms."
+    ]
+  },
+  {
+    id: 'the-morning-briefing',
+    title: "The Morning: What's at Stake in the Final Campaign Sprints",
+    summary: "David Leonhardt analyzes internal polling dynamics, early voting turnout spikes, and economic anxiety in key swing counties.",
+    byline: "By David Leonhardt",
+    readTime: "4 MIN READ",
+    date: "Wednesday, October 16, 2024",
+    section: "U.S.",
+    tag: "Morning Briefing",
+    commentsCount: 620,
+    body: [
+      "Good morning. With three weeks remaining until Election Day, both national campaigns are pouring hundreds of millions of dollars into seven battleground states.",
+      "The demographic cross-currents are striking: non-college-educated suburban voters show signs of shifting, while historic turnout figures in early mail voting suggest an energized electorate."
     ]
   }
 ];
@@ -210,7 +242,8 @@ export const MARKET_DATA: MarketIndex[] = [
   { name: "Nasdaq", value: "18,367.08", change: "+51.43", isPositive: true, pct: "+0.28%" },
   { name: "Dow Jones", value: "43,077.70", change: "+337.28", isPositive: true, pct: "+0.79%" },
   { name: "10-Yr Yield", value: "4.02%", change: "-0.03", isPositive: false, pct: "-0.74%" },
-  { name: "Brent Crude", value: "$74.22", change: "-0.23", isPositive: false, pct: "-0.31%" }
+  { name: "Brent Crude", value: "$74.22", change: "-0.23", isPositive: false, pct: "-0.31%" },
+  { name: "EUR/USD", value: "1.089", change: "+0.002", isPositive: true, pct: "+0.18%" }
 ];
 
 export const TRENDING_TOPICS = [
@@ -221,3 +254,20 @@ export const TRENDING_TOPICS = [
   "Nobel Prize Announcements",
   "World Series Preview"
 ];
+
+export const MOST_READ_ARTICLES = [
+  "Trump's New Picks Showcase 'Not Quite Attorney' at Core",
+  "High-Ranking Women Are Leaving the Trump Administration",
+  "The Real Danger We Face Isn't What You Expect (David Brooks)",
+  "How Election Security Officials Are Countering Fresh AI Threats",
+  "Boeing Reaches Tentative Agreement to End Costly Factory Strike"
+];
+
+export const PODCAST_EPISODE = {
+  title: "The Daily: Inside the Transition Legal Battle",
+  host: "Michael Barbaro and Jonathan Swan",
+  duration: "26 mins",
+  date: "Today • 26 min listen",
+  summary: "Behind closed doors, the incoming administration is screening judicial and department counsel with unprecedented ideological scrutiny.",
+  audioUrl: "#"
+};

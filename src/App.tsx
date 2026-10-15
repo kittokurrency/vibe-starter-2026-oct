@@ -6,6 +6,8 @@ import { ArticleReader } from './components/ArticleReader';
 import { GamesView } from './components/GamesView';
 import { CookingView } from './components/CookingView';
 import { BusinessView } from './components/BusinessView';
+import { OpinionView } from './components/OpinionView';
+import { AudioView } from './components/AudioView';
 import { AudioPlayerBar } from './components/AudioPlayerBar';
 import { SearchModal } from './components/SearchModal';
 import { SubscribeModal } from './components/SubscribeModal';
@@ -14,11 +16,15 @@ import { TodaysPaperModal } from './components/TodaysPaperModal';
 import { SavedDrawer } from './components/SavedDrawer';
 import { SiteFooter } from './components/SiteFooter';
 import { ARTICLES, Article, MARKET_DATA } from './data/articles';
+import { Keyboard, X } from 'lucide-react';
 
 export default function App() {
   const [currentSection, setCurrentSection] = useState<string>('Front Page');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [activeEdition, setActiveEdition] = useState<string>('U.S.');
+  const [usePressPhotos, setUsePressPhotos] = useState<boolean>(false);
+  const [showShortcutsModal, setShowShortcutsModal] = useState<boolean>(false);
+
   const [savedArticleIds, setSavedArticleIds] = useState<Set<string>>(() => {
     try {
       const stored = localStorage.getItem('nyt_saved_articles');
@@ -36,7 +42,7 @@ export default function App() {
   const [isTodaysPaperOpen, setIsTodaysPaperOpen] = useState(false);
   const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState(false);
 
-  // User state
+  // User session
   const [userEmail, setUserEmail] = useState<string | null>(() => {
     try {
       return localStorage.getItem('nyt_user_email');
@@ -51,6 +57,41 @@ export default function App() {
       return false;
     }
   });
+
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in an input or textarea
+      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+
+      if (e.key === '/') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      } else if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        setShowShortcutsModal(prev => !prev);
+      } else if (e.key === 'Escape') {
+        setIsSearchOpen(false);
+        setIsSubscribeOpen(false);
+        setIsAuthOpen(false);
+        setIsTodaysPaperOpen(false);
+        setIsSavedDrawerOpen(false);
+        setShowShortcutsModal(false);
+        if (selectedArticle) setSelectedArticle(null);
+      } else if (e.key === 'f' || e.key === 'F') {
+        setSelectedArticle(null);
+        setCurrentSection('Front Page');
+      } else if (e.key === 'g' || e.key === 'G') {
+        setSelectedArticle(null);
+        setCurrentSection('Games');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedArticle]);
 
   // Save articles to localStorage
   useEffect(() => {
@@ -134,7 +175,7 @@ export default function App() {
     : ARTICLES.filter(a => a.section === currentSection || currentSection === 'All');
 
   return (
-    <div className="min-h-screen bg-white text-[#121212] flex flex-col font-sansui">
+    <div className="min-h-screen bg-white text-[#121212] flex flex-col font-sansui antialiased">
       {/* Subscriber confirmation banner if active */}
       {isSubscribed && (
         <div className="bg-[#121212] text-white text-xs py-1.5 px-4 text-center tracking-wider uppercase font-semibold">
@@ -156,6 +197,8 @@ export default function App() {
         onOpenSaved={() => setIsSavedDrawerOpen(true)}
         savedCount={savedArticleIds.size}
         userEmail={userEmail}
+        usePressPhotos={usePressPhotos}
+        onTogglePhotos={() => setUsePressPhotos(!usePressPhotos)}
       />
 
       {/* Main Content Area */}
@@ -169,6 +212,7 @@ export default function App() {
             isSaved={savedArticleIds.has(selectedArticle.id)}
             onToggleSave={() => toggleSaveArticle(selectedArticle.id)}
             onListen={() => handleListenArticle(selectedArticle)}
+            usePressPhotos={usePressPhotos}
           />
         ) : currentSection === 'Games' ? (
           <GamesView onBackToFrontPage={() => handleSelectSection('Front Page')} />
@@ -179,6 +223,16 @@ export default function App() {
             marketData={MARKET_DATA}
             articles={ARTICLES}
             onSelectArticle={handleSelectArticle}
+          />
+        ) : currentSection === 'Opinion' ? (
+          <OpinionView
+            articles={ARTICLES}
+            onSelectArticle={handleSelectArticle}
+          />
+        ) : currentSection === 'Audio' ? (
+          <AudioView
+            articles={ARTICLES}
+            onPlayArticle={handleListenArticle}
           />
         ) : (
           <>
@@ -191,6 +245,7 @@ export default function App() {
               savedArticleIds={savedArticleIds}
               onToggleSave={toggleSaveArticle}
               onListenArticle={handleListenArticle}
+              usePressPhotos={usePressPhotos}
             />
           </>
         )}
@@ -244,6 +299,63 @@ export default function App() {
         onRemove={(id) => toggleSaveArticle(id)}
         onClearAll={() => setSavedArticleIds(new Set())}
       />
+
+      {/* Keyboard Shortcuts Floating Affordance & Modal */}
+      <div className="fixed bottom-3 right-3 z-40 hidden md:block">
+        <button
+          onClick={() => setShowShortcutsModal(true)}
+          className="bg-white/90 hover:bg-white text-neutral-600 hover:text-black border border-neutral-300 p-2 rounded-full shadow-md transition cursor-pointer"
+          title="Press ? for keyboard shortcuts"
+        >
+          <Keyboard className="w-4 h-4" />
+        </button>
+      </div>
+
+      {showShortcutsModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
+          onClick={() => setShowShortcutsModal(false)}
+        >
+          <div
+            className="bg-white max-w-sm w-full p-6 shadow-2xl rounded-sm text-[#121212]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-[#ebebeb] pb-3 mb-4">
+              <span className="font-bold text-xs uppercase tracking-wider text-[#121212]">
+                Keyboard Shortcuts
+              </span>
+              <button
+                onClick={() => setShowShortcutsModal(false)}
+                className="text-[#727272] hover:text-[#121212]"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <div className="flex items-center justify-between">
+                <span>Search articles</span>
+                <kbd className="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded font-mono">/</kbd>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Return to Front Page</span>
+                <kbd className="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded font-mono">f</kbd>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Play NYT Games</span>
+                <kbd className="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded font-mono">g</kbd>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Close modal / Esc reader</span>
+                <kbd className="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded font-mono">Esc</kbd>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Toggle shortcuts cheat-sheet</span>
+                <kbd className="px-2 py-0.5 bg-gray-100 border border-gray-300 rounded font-mono">?</kbd>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
